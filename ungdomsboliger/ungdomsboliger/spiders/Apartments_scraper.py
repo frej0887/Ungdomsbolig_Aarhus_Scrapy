@@ -8,21 +8,16 @@ class UngdomsboligSpider(scrapy.Spider):
     name = 'ungdomsboliger'
 
     start_urls = [
-        'https://ungdomsboligaarhus.dk/search?page=0',
+        'https://ungdomsboligaarhus.dk/search',
     ]
 
     def parse(self, response):
-        '''page = response.url.split('=')[-1]
-        filename = '%s.html' %page
-        with open(filename, 'wb') as f:
-            f.write(response.body)
-        self.log('Saved file %s' % filename)'''
+
         for department in response.css('table.views-table'):
             apartment_set = []
             department_name = str(department.css("caption").css("a").css("div::text").get()).strip()
             departments = department.css("tbody").css("tr")
             for row in departments:
-                # Backup: lav en liste og grupér senere
                 if departments.index(row) == len(departments) - 1:
                     apartment_set.append(row)
                 if re.search("id=", row.css("tr").get()) or departments.index(row) == len(departments) - 1:
@@ -40,6 +35,10 @@ class UngdomsboligSpider(scrapy.Spider):
                         }
                     apartment_set = []
                 apartment_set.append(row)
+
+        next_page = response.css('li.pager-next a::attr(href)').get()
+        if next_page is not None:
+            yield response.follow(next_page, callback=self.parse)
 
     def doStuff(self, ls):
         tds = ls[0].css("td")
