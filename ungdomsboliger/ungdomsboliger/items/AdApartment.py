@@ -2,6 +2,7 @@ import scrapy
 
 
 class AdApartment(scrapy.Item):
+    id = scrapy.Field()
     department = scrapy.Field()
     rooms = scrapy.Field()
     floor = scrapy.Field()
@@ -13,3 +14,5 @@ class AdApartment(scrapy.Item):
     other_fac_out = scrapy.Field()
     other_fac_in = scrapy.Field()
     other_information = scrapy.Field()
+
+
