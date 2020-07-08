@@ -18,6 +18,9 @@ Evt.
 * Moesgaard
 * Aarhus H
 
+Other
+* Byen
+
 ##Website
 Boliger loader når man scroller ned, hver bolig er en "brik" og ikke liste
 
